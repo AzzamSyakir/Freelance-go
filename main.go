@@ -8,32 +8,33 @@ import (
 	"strings"
 	"time"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/chromedp/cdproto/dom"
 	"github.com/chromedp/chromedp"
-	"github.com/PuerkitoBio/goquery"
 )
 
 type ApiResponse struct {
-    ResultCount int    `json:"ResultCount"`
-    SearchParams struct {
-        DateFrom string `json:"DateFrom"`
-        DateTo   string `json:"DateTo"`
-        Query    string `json:"Query"`
-        Language string `json:"Language"`
-        // ... (other fields in the SearchParams struct)
-    } `json:"SearchParams"`
-    Replies []struct {
-        Pengumuman struct {
-            Id2          string `json:"Id2"`
-            // ... (other fields in the Pengumuman struct)
-        } `json:"pengumuman"`
-        Attachments []struct {
-            Id          int    `json:"Id"`
-            PDFFilename string `json:"PDFFilename"`
-            // ... (other fields in the Attachments struct)
-        } `json:"attachments"`
-    } `json:"Replies"`
+	ResultCount  int `json:"ResultCount"`
+	SearchParams struct {
+		DateFrom string `json:"DateFrom"`
+		DateTo   string `json:"DateTo"`
+		Query    string `json:"Query"`
+		Language string `json:"Language"`
+		// ... (other fields in the SearchParams struct)
+	} `json:"SearchParams"`
+	Replies []struct {
+		Pengumuman struct {
+			Id2 string `json:"Id2"`
+			// ... (other fields in the Pengumuman struct)
+		} `json:"pengumuman"`
+		Attachments []struct {
+			Id          int    `json:"Id"`
+			PDFFilename string `json:"PDFFilename"`
+			// ... (other fields in the Attachments struct)
+		} `json:"attachments"`
+	} `json:"Replies"`
 }
+
 func main() {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", false),
@@ -53,7 +54,7 @@ func main() {
 		// Visit the target page
 		chromedp.Navigate("https://idx.co.id/primary/ListedCompany/GetAnnouncement?kodeEmiten=&emitenType=*&indexFrom=0&pageSize=10&dateFrom=20240201&dateTo=20240209&lang=id&keyword=HMETD"),
 		// Wait for the page to load
-		chromedp.Sleep(10 * time.Second),
+		chromedp.Sleep(10*time.Second),
 		// Extract the raw HTML from the page
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			// Select the root node on the page
